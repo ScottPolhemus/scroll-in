@@ -1,0 +1,49 @@
+<!doctype html>
+<head>
+  <title>Scroll In Example</title>
+  <style>
+    ul {
+      font-size: 3em;
+    }
+
+    ul li {
+      padding: 1em 0;
+      transition: background 500ms;
+    }
+
+    ul li[data-scroll-in="in"] {
+      background: green;
+    }
+  </style>
+  <script src="../dist/scroll-in.min.js"></script>
+  <script>
+    window.onload = function() {
+      new ScrollIn();
+    }
+  </script>
+</head>
+<body>
+  <h1>Scroll In Demo</h1>
+  <ul>
+    <li data-scroll-in>List Item</li>
+    <li data-scroll-in>List Item</li>
+    <li data-scroll-in>List Item</li>
+    <li data-scroll-in>List Item</li>
+    <li data-scroll-in>List Item</li>
+    <li data-scroll-in>List Item</li>
+    <li data-scroll-in>List Item</li>
+    <li data-scroll-in>List Item</li>
+    <li data-scroll-in>List Item</li>
+    <li data-scroll-in>List Item</li>
+    <li data-scroll-in>List Item</li>
+    <li data-scroll-in>List Item</li>
+    <li data-scroll-in>List Item</li>
+    <li data-scroll-in>List Item</li>
+    <li data-scroll-in>List Item</li>
+    <li data-scroll-in>List Item</li>
+    <li data-scroll-in>List Item</li>
+    <li data-scroll-in>List Item</li>
+    <li data-scroll-in>List Item</li>
+    <li data-scroll-in>List Item</li>
+  </ul>
+</body>
