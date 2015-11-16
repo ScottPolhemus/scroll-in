@@ -3,11 +3,10 @@
  * @constructor
  */
 function ScrollIn() {
-  this.updateTargetMap();
-  this.checkScrollPosition();
+  this.update();
 
-  window.addEventListener('resize', this.updateTargetMap.bind(this));
-  window.addEventListener('scroll', this.checkScrollPosition.bind(this));
+  window.addEventListener('resize', this.update.bind(this));
+  window.addEventListener('scroll', this.checkScroll.bind(this));
 }
 
 /**
@@ -20,7 +19,7 @@ function ScrollIn() {
  *   2000: [el, el, el]
  * }
  */
-ScrollIn.prototype.updateTargetMap = function() {
+ScrollIn.prototype.update = function() {
   var targets = document.querySelectorAll('[data-scroll-in]');
   var targetMap = {};
 
@@ -34,13 +33,14 @@ ScrollIn.prototype.updateTargetMap = function() {
   }
 
   this.map = targetMap;
+  this.checkScroll();
 };
 
 /**
  * Iterates through the target map and triggers
  * any element groups above the current scroll position.
  */
-ScrollIn.prototype.checkScrollPosition = function() {
+ScrollIn.prototype.checkScroll = function() {
   var scrollTop = window.pageYOffset;
   var scrollBottom = scrollTop + window.innerHeight;
 
