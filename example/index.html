@@ -18,7 +18,10 @@
   <script src="../dist/scroll-in.min.js"></script>
   <script>
     window.onload = function() {
-      new ScrollIn();
+      // (showing defaults)
+      new ScrollIn({
+        y: 100
+      });
     }
   </script>
 </head>
@@ -30,10 +33,12 @@
     <li data-scroll-in>List Item</li>
     <li data-scroll-in>List Item</li>
     <li data-scroll-in>List Item</li>
-    <li data-scroll-in>List Item</li>
-    <li data-scroll-in>List Item</li>
-    <li data-scroll-in>List Item</li>
-    <li data-scroll-in>List Item</li>
+    <li data-scroll-in data-scroll-in-y="top">List Item (top)</li>
+    <li data-scroll-in data-scroll-in-y="50">List Item (50%)</li>
+    <li data-scroll-in data-scroll-in-y="center">List Item (center)</li>
+    <li data-scroll-in data-scroll-in-y="75">List Item (75%)</li>
+    <li data-scroll-in data-scroll-in-y="30">List Item (30%)</li>
+    <li data-scroll-in data-scroll-in-y="bottom">List Item (bottom)</li>
     <li data-scroll-in>List Item</li>
     <li data-scroll-in>List Item</li>
     <li data-scroll-in>List Item</li>

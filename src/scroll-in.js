@@ -2,11 +2,40 @@
  * Creates a ScrollIn watcher instance.
  * @constructor
  */
-function ScrollIn() {
-  this.update();
+function ScrollIn(opts) {
+  // Default options
+  this.options = {
+    y: 100
+  };
+
+  // Options passed to the constructor
+  if(opts) {
+    for(var name in opts) {
+      var value = opts[name];
+      name = name.toLowerCase();
+      this.options[name] = normalizeOption(name, value);
+    }
+  }
 
   window.addEventListener('resize', this.update.bind(this));
   window.addEventListener('scroll', this.checkScroll.bind(this));
+
+  this.update();
+  this.checkScroll();
+}
+
+function normalizeOption(name, value) {
+  if(name === 'y') {
+    if(value === 'top') {
+      return 0;
+    } else if(value === 'center') {
+      return 50;
+    } else if(value === 'bottom') {
+      return 100;
+    } else {
+      return parseFloat(value);
+    }
+  }
 }
 
 /**
@@ -27,6 +56,16 @@ ScrollIn.prototype.update = function() {
     var el = targets[i];
     var rect = el.getBoundingClientRect();
     var top = rect.top;
+
+    var percentOffset = this.options.y;
+
+    if(el.hasAttribute('data-scroll-in-y')) {
+      percentOffset = normalizeOption('y', el.getAttribute('data-scroll-in-y'));
+    }
+
+    var actualOffset = window.innerHeight * ((100 - percentOffset) / 100);
+
+    top += actualOffset;
 
     targetMap[top] = targetMap[top] || [];
     targetMap[top].push(el);
