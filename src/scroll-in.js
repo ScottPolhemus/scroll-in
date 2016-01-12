@@ -68,7 +68,7 @@ ScrollIn.prototype.checkScroll = function() {
 ScrollIn.prototype.triggerElement = function(el, delay) {
   delay = delay || 0;
 
-  if(window.CustomEvent) {
+  if(typeof CustomEvent === 'function') {
     var event = new CustomEvent('scroll-in');
   } else {
     var event = document.createEvent('CustomEvent');
