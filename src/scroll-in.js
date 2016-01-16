@@ -78,7 +78,7 @@ ScrollIn.prototype.checkScroll = function() {
           // Stagger simultaneous events
           var delay = 50 * index;
 
-          this.triggerElement(targetEl, delay);
+          triggerScrollIn(targetEl, delay);
         }
       }.bind(this));
     }
@@ -90,7 +90,7 @@ ScrollIn.prototype.checkScroll = function() {
  * @param el - The element to be triggered.
  * @param delay - Delay (in milliseconds) before triggering element.
  */
-ScrollIn.prototype.triggerElement = function(el, delay) {
+function triggerScrollIn(el, delay) {
   delay = delay || 0;
 
   if(typeof CustomEvent === 'function') {
@@ -101,8 +101,10 @@ ScrollIn.prototype.triggerElement = function(el, delay) {
   }
 
   setTimeout(function() {
-    el.setAttribute('data-scroll-in', 'in');
-    el.dispatchEvent(event);
+    requestAnimationFrame(function() {
+      el.setAttribute('data-scroll-in', 'in');
+      el.dispatchEvent(event);
+    });
   }, delay);
 }
 
