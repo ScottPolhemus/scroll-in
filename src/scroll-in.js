@@ -5,6 +5,7 @@
 function ScrollIn(opts) {
   // Default options
   this.options = {
+    stagger: 50,
     y: 100
   };
 
@@ -68,15 +69,23 @@ ScrollIn.prototype.update = function() {
 ScrollIn.prototype.checkScroll = function() {
   var scrollTop = window.pageYOffset;
   var scrollBottom = scrollTop + window.innerHeight;
+  var targetIndex = 0;
 
   for(var targetY in this.map) {
+    var targetDelay = this.options.stagger * targetIndex;
+
+    if(scrollTop > targetY) {
+      targetDelay = 0;
+    } else {
+      targetIndex++;
+    }
+
     if(scrollBottom > targetY) {
       var targets = this.map[targetY];
 
       targets.forEach(function(targetEl, index) {
         if(targetEl.getAttribute('data-scroll-in') !== 'in') {
-          // Stagger simultaneous events
-          var delay = 50 * index;
+          var delay = targetDelay + (this.options.stagger * index);
 
           triggerScrollIn(targetEl, delay);
         }
