@@ -5,7 +5,8 @@
 function ScrollIn(opts) {
   // Default options
   this.options = {
-    y: 100
+    y: 100,
+    stagger: 50
   };
 
   // Options passed to the constructor
@@ -35,6 +36,8 @@ function normalizeOption(name, value) {
     } else {
       return parseFloat(value);
     }
+  } else if(name === 'stagger') {
+    return parseInt(value);
   }
 }
 
@@ -84,13 +87,16 @@ ScrollIn.prototype.checkScroll = function() {
   var scrollBottom = scrollTop + window.innerHeight;
 
   for(var targetY in this.map) {
+    var targetYDelay = 0;
+
     if(scrollBottom > targetY) {
       var targets = this.map[targetY];
+      targetYDelay += this.options.stagger;
 
       targets.forEach(function(targetEl, index) {
         if(targetEl.getAttribute('data-scroll-in') !== 'in') {
           // Stagger simultaneous events
-          var delay = 50 * index;
+          var delay = targetYDelay + (50 * index);
 
           this.triggerElement(targetEl, delay);
         }
@@ -115,8 +121,10 @@ ScrollIn.prototype.triggerElement = function(el, delay) {
   }
 
   setTimeout(function() {
-    el.setAttribute('data-scroll-in', 'in');
-    el.dispatchEvent(event);
+    requestAnimationFrame(function() {
+      el.setAttribute('data-scroll-in', 'in');
+      el.dispatchEvent(event);
+    });
   }, delay);
 }
 
