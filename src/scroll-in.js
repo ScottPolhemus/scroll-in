@@ -22,7 +22,6 @@ function ScrollIn(opts) {
   window.addEventListener('scroll', this.checkScroll.bind(this));
 
   this.update();
-  this.checkScroll();
 }
 
 /**
@@ -83,13 +82,15 @@ ScrollIn.prototype.checkScroll = function() {
     if(scrollBottom > targetY) {
       var targets = this.map[targetY];
 
-      targets.forEach(function(targetEl, index) {
+      for(var i = 0; i < targets.length; i++) {
+        var targetEl = targets[i];
+
         if(targetEl.getAttribute('data-scroll-in') !== 'in') {
-          var delay = targetDelay + (this.options.stagger * index);
+          var delay = targetDelay + (this.options.stagger * i);
 
           triggerScrollIn(targetEl, delay);
         }
-      }.bind(this));
+      }
     }
   }
 }
