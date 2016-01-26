@@ -1,7 +1,7 @@
 {
   "name": "scroll-in",
-  "version": "0.0.5",
-  "description": "A tiny module for triggering events on elements when they are scrolled into view.",
+  "version": "0.0.6",
+  "description": "A small library for triggering events on elements when they are scrolled into view.",
   "main": "src/scroll-in.js",
   "repository": {
     "type": "git",
