@@ -134,6 +134,8 @@ function parseOption(name, value) {
     } else {
       return parseFloat(value);
     }
+  } else if(name === 'stagger') {
+    return parseFloat(value);
   }
 }
 
