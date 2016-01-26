@@ -82,7 +82,6 @@ ScrollIn.prototype.checkScroll = function() {
 
     if(scrollBottom > targetY) {
       var targets = this.map[targetY];
-      targetYDelay += this.options.stagger;
 
       targets.forEach(function(targetEl, index) {
         if(targetEl.getAttribute('data-scroll-in') !== 'in') {
