@@ -41,7 +41,7 @@ ScrollIn.prototype.update = function() {
   for(var i = 0; i < targets.length; i++) {
     var el = targets[i];
     var rect = el.getBoundingClientRect();
-    var top = rect.top;
+    var top = rect.top + window.pageYOffset;
 
     var percentOffset = this.options.y;
 
