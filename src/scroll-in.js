@@ -107,7 +107,7 @@ function triggerScrollIn(el, delay) {
     var event = new CustomEvent('scroll-in');
   } else {
     var event = document.createEvent('CustomEvent');
-    event.initCustomEvent('scroll-in', true, true);
+    event.initCustomEvent('scroll-in', true, true, {});
   }
 
   setTimeout(function() {
