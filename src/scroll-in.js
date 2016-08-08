@@ -5,6 +5,7 @@
 function ScrollIn(opts) {
   // Default options
   this.options = {
+    stagger: 50,
     y: 100
   };
 
@@ -13,7 +14,7 @@ function ScrollIn(opts) {
     for(var name in opts) {
       var value = opts[name];
       name = name.toLowerCase();
-      this.options[name] = normalizeOption(name, value);
+      this.options[name] = parseOption(name, value);
     }
   }
 
@@ -21,21 +22,6 @@ function ScrollIn(opts) {
   window.addEventListener('scroll', this.checkScroll.bind(this));
 
   this.update();
-  this.checkScroll();
-}
-
-function normalizeOption(name, value) {
-  if(name === 'y') {
-    if(value === 'top') {
-      return 0;
-    } else if(value === 'center') {
-      return 50;
-    } else if(value === 'bottom') {
-      return 100;
-    } else {
-      return parseFloat(value);
-    }
-  }
 }
 
 /**
@@ -55,12 +41,12 @@ ScrollIn.prototype.update = function() {
   for(var i = 0; i < targets.length; i++) {
     var el = targets[i];
     var rect = el.getBoundingClientRect();
-    var top = rect.top;
+    var top = rect.top + window.pageYOffset;
 
     var percentOffset = this.options.y;
 
     if(el.hasAttribute('data-scroll-in-y')) {
-      percentOffset = normalizeOption('y', el.getAttribute('data-scroll-in-y'));
+      percentOffset = parseOption('y', el.getAttribute('data-scroll-in-y'));
     }
 
     var actualOffset = window.innerHeight * ((100 - percentOffset) / 100);
@@ -82,19 +68,29 @@ ScrollIn.prototype.update = function() {
 ScrollIn.prototype.checkScroll = function() {
   var scrollTop = window.pageYOffset;
   var scrollBottom = scrollTop + window.innerHeight;
+  var targetIndex = 0;
 
   for(var targetY in this.map) {
+    var targetDelay = this.options.stagger * targetIndex;
+
+    if(scrollTop > targetY) {
+      targetDelay = 0;
+    } else {
+      targetIndex++;
+    }
+
     if(scrollBottom > targetY) {
       var targets = this.map[targetY];
 
-      targets.forEach(function(targetEl, index) {
-        if(targetEl.getAttribute('data-scroll-in') !== 'in') {
-          // Stagger simultaneous events
-          var delay = 50 * index;
+      for(var i = 0; i < targets.length; i++) {
+        var targetEl = targets[i];
 
-          this.triggerElement(targetEl, delay);
+        if(targetEl.getAttribute('data-scroll-in') !== 'in') {
+          var delay = targetDelay + (this.options.stagger * i);
+
+          triggerScrollIn(targetEl, delay);
         }
-      }.bind(this));
+      }
     }
   }
 }
@@ -104,20 +100,43 @@ ScrollIn.prototype.checkScroll = function() {
  * @param el - The element to be triggered.
  * @param delay - Delay (in milliseconds) before triggering element.
  */
-ScrollIn.prototype.triggerElement = function(el, delay) {
+function triggerScrollIn(el, delay) {
   delay = delay || 0;
 
   if(typeof CustomEvent === 'function') {
     var event = new CustomEvent('scroll-in');
   } else {
     var event = document.createEvent('CustomEvent');
-    event.initCustomEvent('scroll-in', true, true);
+    event.initCustomEvent('scroll-in', true, true, {});
   }
 
   setTimeout(function() {
-    el.setAttribute('data-scroll-in', 'in');
-    el.dispatchEvent(event);
+    requestAnimationFrame(function() {
+      el.setAttribute('data-scroll-in', 'in');
+      el.dispatchEvent(event);
+    });
   }, delay);
+}
+
+/**
+ * Parses the value of an option and returns the normalized value.
+ * @param el - The element to be triggered.
+ * @param delay - Delay (in milliseconds) before triggering element.
+ */
+function parseOption(name, value) {
+  if(name === 'y') {
+    if(value === 'top') {
+      return 0;
+    } else if(value === 'center') {
+      return 50;
+    } else if(value === 'bottom') {
+      return 100;
+    } else {
+      return parseFloat(value);
+    }
+  } else if(name === 'stagger') {
+    return parseFloat(value);
+  }
 }
 
 module.exports = ScrollIn;
